@@ -37,10 +37,10 @@ void glView:: paintGL(){
     glLoadIdentity();
 
 
-    glTranslatef(0,0, -3);
+    glTranslatef(0,0, -2);
     glRotatef(xRot,1,0,0);
     glRotatef(yRot,0,1,0);
-    char a[]  = "/Users/pickling/0projects/3D/src/models/Cube.obj";
+    char a[]  = "/Users/pickling/0projects/3D/s21_3dViewer/src/models/Shrek.obj";
     drawObj(a);
 
 }
@@ -65,7 +65,12 @@ void glView::drawObj(char *file){
     Point *all_points;
     int top_pointers = 0;
     int count_surfaces = 0;
-    all_points = point_reading(file, &top_pointers);
+    ExtremeValues extreme_values;
+//all_points = point_reading(file, &top_pointers);
+
+    all_points = point_reading(file, &top_pointers, &extreme_values);
+    figure_centering(top_pointers, &extreme_values, all_points);
+
     Surface *all_surfaces;
     all_surfaces = (Surface *)malloc(SIZE * sizeof(Surface));
     all_surfaces = surface_formation(file, top_pointers, &count_surfaces,
