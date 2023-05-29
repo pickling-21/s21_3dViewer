@@ -17,6 +17,7 @@ typedef struct {
   Point **one_point;
   int amount_of_points;
 } Surface;
+
 typedef struct {
   double x_max, x_min;
   double y_max, y_min;
@@ -24,8 +25,6 @@ typedef struct {
 } ExtremeValues;
 
 int main88();
-void destoy_surface(Surface *all_surfaces, int count_surfaces);
-
 Point *point_reading(char *file, int *top_pointers,
                      ExtremeValues *extreme_values);
 void coordinate_recording_counter(int *count_coord, int top_pointers,
@@ -43,6 +42,17 @@ void finding_extreme_values(double result, int count_coord, int top_pointers,
                             ExtremeValues *extreme_values);
 void figure_centering(int top_pointers, ExtremeValues *extreme_values,
                       Point *all_points);
-double delta_max(double a, double b, double c);
+double delta_max(double x, double y, double z);
+void figure_rotation_x(int top_pointers, int alpha, Point *all_points);
+void figure_rotation_y(int top_pointers, int alpha, Point *all_points);
+void figure_rotation_z(int top_pointers, int alpha, Point *all_points);
+void figure_move_x(int top_pointers, int shift, Point *all_points);
+void figure_move_y(int top_pointers, int shift, Point *all_points);
+void figure_move_z(int top_pointers, int shift, Point *all_points);
+void figure_scaling(int top_pointers, double coefficient,
+                    ExtremeValues *extreme_values, Point *all_points);
+void to_int(int *exp, char chr, int *flag_mines_exp);
+void point_attribute_correction(int flag_mines, int flag_mines_exp, int *exp,
+                                double *result);
 
 #endif  // PARSER_H

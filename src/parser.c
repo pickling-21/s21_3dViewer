@@ -2,9 +2,9 @@
 // int main() { main88(); }
 int main88() {
   //    char *file = {"RailwayTrack.obj"};
-  char *file = {
-      "/Users/pickling/0projects/3D/s21_3dViewer/src/models/Shrek.obj"};
+  //    char *file = {"cube.obj"};
   //    char *file = {"Shrek.obj"};
+  char *file = {"ring.obj"};
 
   ExtremeValues extreme_values;
   Point *all_points;
@@ -17,15 +17,16 @@ int main88() {
   all_surfaces = (Surface *)malloc(SIZE * sizeof(Surface));
   all_surfaces = surface_formation(file, top_pointers, &count_surfaces,
                                    all_surfaces, all_points);
-
+  //    figure_rotation_x(top_pointers, 90, all_points);
+  //    figure_scaling(top_pointers, 0.75, &extreme_values, all_points);
   /* вывести крайние координаты точек */
   printf("x_max: %f x_min: %f\n", extreme_values.x_max, extreme_values.x_min);
   printf("y_max: %f y_min: %f\n", extreme_values.y_max, extreme_values.y_min);
-  printf("z_max: %f z_min:%f\n", extreme_values.z_max, extreme_values.z_min);
+  printf("z_max: %f z_min: %f\n", extreme_values.z_max, extreme_values.z_min);
   /* вывести все координаты точек */
   printf("|==========================|\n");
   for (int i = 0; i <= top_pointers; ++i)
-    printf("v%d: %1.3f %1.3f %1.3f\n", i + 1, all_points[i].x, all_points[i].y,
+    printf("v%d: %1.5f %1.5f %1.5f\n", i + 1, all_points[i].x, all_points[i].y,
            all_points[i].z);
   printf("|==========================|\n");
   /* вывести все поверхности по точкам */
@@ -33,7 +34,7 @@ int main88() {
   for (int i = 0; i < count_surfaces; ++i) {
     printf("\t|f%d:|\n", i + 1);
     for (int j = 0; j < all_surfaces[i].amount_of_points; ++j) {
-      printf("v%ld: %1.3f %1.3f %1.3f\n",
+      printf("v%ld: %1.5f %1.5f %1.5f\n",
              all_surfaces[i].one_point[j] - all_points + 1,
              all_surfaces[i].one_point[j]->x, all_surfaces[i].one_point[j]->y,
              all_surfaces[i].one_point[j]->z);
@@ -49,6 +50,65 @@ int main88() {
   return 0;
 }
 
+void figure_scaling(int top_pointers, double coefficient,
+                    ExtremeValues *extreme_values, Point *all_points) {
+  double dmax;
+  dmax = delta_max(extreme_values->x_max - extreme_values->x_min,
+                   extreme_values->y_max - extreme_values->y_min,
+                   extreme_values->z_max - extreme_values->z_min);
+  coefficient = (coefficient - (coefficient * (-1))) / dmax;
+  for (int i = 0; i <= top_pointers; ++i) {
+    all_points[i].x *= coefficient;
+    all_points[i].y *= coefficient;
+    all_points[i].z *= coefficient;
+  }
+}
+
+void figure_rotation_x(int top_pointers, int alpha, Point *all_points) {
+  for (int i = 0; i <= top_pointers; ++i) {
+    all_points[i].y =
+        all_points[i].y * cos(alpha) + all_points[i].z * sin(alpha);
+    all_points[i].z =
+        (-all_points[i].y) * sin(alpha) + all_points[i].z * cos(alpha);
+  }
+}
+
+void figure_rotation_y(int top_pointers, int alpha, Point *all_points) {
+  for (int i = 0; i <= top_pointers; ++i) {
+    all_points[i].x =
+        all_points[i].x * cos(alpha) + all_points[i].z * sin(alpha);
+    all_points[i].z =
+        (-all_points[i].x) * sin(alpha) + all_points[i].z * cos(alpha);
+  }
+}
+
+void figure_rotation_z(int top_pointers, int alpha, Point *all_points) {
+  for (int i = 0; i <= top_pointers; ++i) {
+    all_points[i].x =
+        all_points[i].x * cos(alpha) - all_points[i].y * sin(alpha);
+    all_points[i].y =
+        (-all_points[i].x) * sin(alpha) + all_points[i].y * cos(alpha);
+  }
+}
+
+void figure_move_x(int top_pointers, int shift, Point *all_points) {
+  for (int i = 0; i <= top_pointers; ++i) {
+    all_points[i].x += shift;
+  }
+}
+
+void figure_move_y(int top_pointers, int shift, Point *all_points) {
+  for (int i = 0; i <= top_pointers; ++i) {
+    all_points[i].y += shift;
+  }
+}
+
+void figure_move_z(int top_pointers, int shift, Point *all_points) {
+  for (int i = 0; i <= top_pointers; ++i) {
+    all_points[i].z += shift;
+  }
+}
+
 void figure_centering(int top_pointers, ExtremeValues *extreme_values,
                       Point *all_points) {
   double center_x, center_y, center_z;
@@ -62,7 +122,7 @@ void figure_centering(int top_pointers, ExtremeValues *extreme_values,
   dmax = delta_max(extreme_values->x_max - extreme_values->x_min,
                    extreme_values->y_max - extreme_values->y_min,
                    extreme_values->z_max - extreme_values->z_min);
-  coefficient = (1 - (1 * (-1))) / dmax;
+  coefficient = (0.75 - (0.75 * (-1))) / dmax;
   for (int i = 0; i <= top_pointers; ++i) {
     all_points[i].x -= center_x;
     all_points[i].x *= coefficient;
@@ -109,19 +169,27 @@ Point *point_processing(FILE *f, int *top_pointers, int *size_all_points,
       int flag_result = 0;
       int flag_dot = 0;
       int flag_mines = 0;
+      int flag_mines_exp = 0;
+      int flag_exp = 0;
+      int exp = 0;
       double result = 0;
       for (int i = 0; count_coord < 3; ++i) {
         if ((buffer_str[i] != ' ') && (buffer_str[i] != '\n') &&
             (buffer_str[i] != '\0') && (buffer_str[i] != 13)) {
-          to_double(&result, buffer_str[i], &flag_dot, &flag_mines);
+          if ((buffer_str[i] == 'e') || (buffer_str[i] == 'E')) {
+            flag_exp = 1;
+          }
+          if (flag_exp == 0) {
+            to_double(&result, buffer_str[i], &flag_dot, &flag_mines);
+          } else {
+            to_int(&exp, buffer_str[i], &flag_mines_exp);
+          }
           flag_result = 1;
         } else if (flag_result != 0) {
-          if (flag_mines == 1) {
-            result *= -1;
-          }
+          point_attribute_correction(flag_mines, flag_mines_exp, &exp, &result);
           finding_extreme_values(result, count_coord, *top_pointers,
                                  extreme_values);
-          flag_mines = flag_result = flag_dot = 0;
+          flag_mines = flag_result = flag_dot = flag_mines_exp = 0;
           coordinate_recording_counter(&count_coord, *top_pointers, &result,
                                        all_points);
           if (count_coord == 3) {
@@ -134,6 +202,27 @@ Point *point_processing(FILE *f, int *top_pointers, int *size_all_points,
   }
   (*top_pointers)--;
   return all_points;
+}
+
+void point_attribute_correction(int flag_mines, int flag_mines_exp, int *exp,
+                                double *result) {
+  if (flag_mines == 1) {
+    (*result) *= -1;
+  }
+  if ((*exp) != 0) {
+    if (flag_mines_exp == 1) {
+      (*exp) *= -1;
+    }
+    (*result) *= pow(10, (*exp));
+  }
+}
+
+void to_int(int *exp, char chr, int *flag_mines_exp) {
+  if (chr != '-') {
+    (*exp) = (*exp) * 10 + (chr - 48);
+  } else {
+    (*flag_mines_exp) = 1;
+  }
 }
 
 void finding_extreme_values(double result, int count_coord, int top_pointers,
@@ -233,11 +322,13 @@ void points_in_space(char *buffer_str, int count_surfaces, int top_pointers,
                      Surface *all_surfaces, Point *all_points) {
   int res = 0;
   int count_point_in_surface = 0;
-  int number_of_points = 0;
+  int number_of_points = (buffer_str[0] == ' ') ? 0 : 1;
   int flag_mines = 0;
   int flag_slash = 0;
   for (int i = 0; buffer_str[i] != 0; ++i) {
-    if ((buffer_str[i] == ' ') && (buffer_str[i + 1] != ' '))
+    if ((buffer_str[i] == ' ') &&
+        (((buffer_str[i + 1] >= '0') && (buffer_str[i + 1] <= '9')) ||
+         (buffer_str[i + 1] == '-')))
       number_of_points++;
   }
   all_surfaces[count_surfaces].one_point =

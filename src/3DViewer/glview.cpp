@@ -1,17 +1,15 @@
 #include "glview.h"
 #include "ui_glview.h"
 
-glView::glView(QWidget *parent)
-    : QOpenGLWidget(parent)
+glView::glView(QWidget *parent) :
+    QOpenGLWidget(parent)
 {
-    setWindowTitle("Cube");
-    setGeometry(400,200,800,600);
- }
 
-glView::~glView()
-{
-    delete ui;
+    background_color.setRgb(0, 0, 0);
+    edge_color.setRgb(255, 255, 255);
+    vertex_color.setRgb(255, 255, 255);
 }
+
 
 void glView:: initializeGL(){
 //    initializeOpenGLFunctions();
@@ -31,7 +29,7 @@ void glView:: resizeGL(int w, int h){
 // вершинный буфер
 
 void glView:: paintGL(){
-//    glClearColor(0, 1, 0, 0);
+    glClearColor(background_color.redF(), background_color.greenF(), background_color.blueF(), background_color.alphaF());
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -40,7 +38,7 @@ void glView:: paintGL(){
     glTranslatef(0,0, -2);
     glRotatef(xRot,1,0,0);
     glRotatef(yRot,0,1,0);
-    char a[]  = "/Users/pickling/0projects/3D/s21_3dViewer/src/models/Shrek.obj";
+    char a[]  = "/Users/pickling/0projects/3D/s21_3dViewer/src/models/skull.obj";
     drawObj(a);
 
 }
@@ -57,6 +55,25 @@ void glView::mouseMoveEvent(QMouseEvent* mo){
     update();
 }
 
+uint64_t glView::count_edge(char *file)
+{
+     Point *all_points;
+     int top_pointers = 0;
+     int count_surfaces = 0;
+     edge_amount =0;
+     ExtremeValues extreme_values;
+    all_points = point_reading(file, &top_pointers, &extreme_values);
+    Surface *all_surfaces;
+    all_surfaces = (Surface *)malloc(SIZE * sizeof(Surface));
+    all_surfaces = surface_formation(file, top_pointers, &count_surfaces,
+                                     all_surfaces, all_points);
+    for(int i = 0; i < count_surfaces; i++){
+        edge_amount+=(uint64_t)all_surfaces[i].amount_of_points;
+    }
+    edge_amount/=2;
+    return edge_amount;
+}
+
 
 void glView::drawObj(char *file){
     //    char *file = {"cube.obj"};
@@ -65,18 +82,19 @@ void glView::drawObj(char *file){
     Point *all_points;
     int top_pointers = 0;
     int count_surfaces = 0;
+    double alfa = 45;
+    alfa = (alfa * M_PI)/180;
     ExtremeValues extreme_values;
-//all_points = point_reading(file, &top_pointers);
+
 
     all_points = point_reading(file, &top_pointers, &extreme_values);
     figure_centering(top_pointers, &extreme_values, all_points);
-
+    figure_rotation_z(top_pointers,alfa, all_points);
+//    figure_move_x(top_pointers,2, all_points);
     Surface *all_surfaces;
     all_surfaces = (Surface *)malloc(SIZE * sizeof(Surface));
     all_surfaces = surface_formation(file, top_pointers, &count_surfaces,
                                      all_surfaces, all_points);
-
-
 
     for(int i = 0; i < count_surfaces; i++){
         for(int j = 0; j < all_surfaces[i].amount_of_points; j++){
@@ -84,23 +102,7 @@ void glView::drawObj(char *file){
             glVertex3d(all_surfaces[i].one_point[j]->x,all_surfaces[i].one_point[j]->y,all_surfaces[i].one_point[j]->z);
         }glEnd();
     }
-//    glVertexPointer(3, GL_DOUBLE, 0, vertex_array);
-//    for (int  i = 0; i < count_surfaces; i++){
-//        glColor3f(0.128,0.128,0.128);
-//        glBegin(GL_LINE_LOOP);
-//        for (int s=0; s<all_surfaces[i].amount_of_points; s++)
-//        glVertex3f(all_surfaces[i].one_point[s]->x,all_surfaces[i].one_point[s]->y,all_surfaces[i].one_point[s]->z);
-//        glEnd();
 
-//        glColor3f(0,1,0);
-//        glBegin(GL_POLYGON);
-//        for (int s=0; s<all_surfaces[i].amount_of_points; s++)
-//        glVertex3f(all_surfaces[i].one_point[s]->x,all_surfaces[i].one_point[s]->y,all_surfaces[i].one_point[s]->z);
-//        glEnd();
-
-//    }
-
-        //рисуем каркас из линий
          for (int i = 0; i < count_surfaces; ++i) {
              free(all_surfaces[i].one_point);
          }
@@ -108,6 +110,8 @@ void glView::drawObj(char *file){
     free(all_points);
 
 }
+
+
 //void glView::drawObj(char * s){
 //    float a = 0.5;
 //    float ver[] = {

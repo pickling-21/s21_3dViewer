@@ -12,14 +12,16 @@ CONFIG += c++17
 SOURCES += \
     main.cpp \
     glview.cpp \
-    ../parser.c
+    ../parser.c \
+    mainwindow.cpp
 
 HEADERS += \
-    glview.h \
-    ../parser.h
+    ../parser.h \
+    glview.h\
+    mainwindow.h
 
 FORMS += \
-    glview.ui
+    mainwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
