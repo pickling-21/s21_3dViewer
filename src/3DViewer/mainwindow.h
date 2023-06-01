@@ -37,6 +37,28 @@ private slots:
 
     void on_pushButton_color_background_clicked();
 
+    void full_info();
+
+
+
+    void on_radioButton_central_clicked(bool checked);
+
+    void on_radioButton_ortho_clicked(bool checked);
+
+    void on_radioButton_no_point_clicked(bool checked);
+
+    void on_radioButton_sphere_clicked(bool checked);
+
+    void on_radioButton_cube_clicked(bool checked);
+
+    void on_horizontalSlider_vertex_size_valueChanged(int value);
+
+    void on_horizontalSlider_edge_size_valueChanged(int value);
+
+    void on_radioButton_solid_edge_clicked(bool checked);
+
+    void on_radioButton_dotted_edge_clicked(bool checked);
+
 private:
     Ui::MainWindow *ui;
 };

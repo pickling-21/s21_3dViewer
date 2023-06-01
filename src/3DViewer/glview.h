@@ -4,7 +4,7 @@
 #include <QWidget>
 #include <QOpenGLWidget>
 #include <QMouseEvent>
-
+#include <QDebug>
 
 extern "C"
 {
@@ -17,6 +17,10 @@ namespace Ui {
 class glView;
 }
 
+enum points_type{
+    NO, CUBE, SPHERE
+};
+
 class glView : public QOpenGLWidget
 {
     Q_OBJECT
@@ -27,7 +31,7 @@ public:
 public:
     QColor background_color, vertex_color, edge_color;
 
-    QString filename;
+    QString filename = "../../../../s21_3dViewer/src/models/Shrek.obj";
 
     double x_move, y_move, z_move;
     double prev_x_move, prev_y_move, prev_z_move;
@@ -37,6 +41,15 @@ public:
 
     double scale;
 
+    bool ortho, frustum;
+
+    enum points_type p_type;
+
+    float vertex_size;
+    float edge_size;
+
+    bool dotted_edge;
+
     uint64_t vertex_amount;
     uint64_t edge_amount;
 
@@ -44,12 +57,12 @@ public:
 private:
     float xRot, yRot, zRot;
     QPoint mPos;
-    void drawObj(char *file);
+    void drawObj(char *file, bool points);
     void mousePressEvent(QMouseEvent*);
     void mouseMoveEvent(QMouseEvent*);
-    uint64_t count_edge(char * file);
+    void count_edge(char * file);
     uint64_t count_vertex(char * file);
-
+    void projection();
 
 public:
     void initializeGL();

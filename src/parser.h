@@ -1,6 +1,5 @@
 #ifndef PARSER_H
 #define PARSER_H
-
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -23,7 +22,6 @@ typedef struct {
   double y_max, y_min;
   double z_max, z_min;
 } ExtremeValues;
-
 int main88();
 Point *point_reading(char *file, int *top_pointers,
                      ExtremeValues *extreme_values);
@@ -31,10 +29,10 @@ void coordinate_recording_counter(int *count_coord, int top_pointers,
                                   double *result, Point *all_points);
 void points_in_space(char *buffer_str, int count_surfaces, int top_pointers,
                      Surface *all_surfaces, Point *all_points);
-Surface *surface_formation(char *file, int top_pointers, int *count_surfaces,
+Surface *surface_formation(char *file, int *count_surfaces,
                            Surface *all_surfaces, Point *all_points);
 void point_address_calculation(char chr, int *res, int *flag_mines);
-void point_address_modification(int *res, int top_pointers);
+void point_address_modification(int *res, int *flag_mines, int top_pointers);
 Point *point_processing(FILE *f, int *top_pointers, int *size_all_points,
                         ExtremeValues *extreme_values, Point *all_points);
 void to_double(double *result, char chr, int *flag_dot, int *flag_mines);
@@ -43,14 +41,12 @@ void finding_extreme_values(double result, int count_coord, int top_pointers,
 void figure_centering(int top_pointers, ExtremeValues *extreme_values,
                       Point *all_points);
 double delta_max(double x, double y, double z);
-void figure_rotation_x(int top_pointers, int alpha, Point *all_points);
-void figure_rotation_y(int top_pointers, int alpha, Point *all_points);
-void figure_rotation_z(int top_pointers, int alpha, Point *all_points);
+void figure_rotation(int top_pointers, Point *all_points, double degree_x,
+                     double degree_y, double degree_z);
 void figure_move_x(int top_pointers, int shift, Point *all_points);
 void figure_move_y(int top_pointers, int shift, Point *all_points);
 void figure_move_z(int top_pointers, int shift, Point *all_points);
-void figure_scaling(int top_pointers, double coefficient,
-                    ExtremeValues *extreme_values, Point *all_points);
+void figure_scaling(int top_pointers, double coefficient, Point *all_points);
 void to_int(int *exp, char chr, int *flag_mines_exp);
 void point_attribute_correction(int flag_mines, int flag_mines_exp, int *exp,
                                 double *result);
