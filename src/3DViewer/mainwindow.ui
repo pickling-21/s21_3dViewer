@@ -31,19 +31,19 @@
     <property name="geometry">
      <rect>
       <x>970</x>
-      <y>860</y>
+      <y>890</y>
       <width>291</width>
-      <height>50</height>
+      <height>21</height>
      </rect>
     </property>
     <property name="text">
-     <string>Шрекс</string>
+     <string>-</string>
     </property>
     <property name="wordWrap">
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit">
+   <widget class="QLineEdit" name="lineEdit_xRot">
     <property name="geometry">
      <rect>
       <x>1200</x>
@@ -70,7 +70,7 @@
     <property name="geometry">
      <rect>
       <x>970</x>
-      <y>840</y>
+      <y>860</y>
       <width>101</width>
       <height>16</height>
      </rect>
@@ -118,7 +118,7 @@
      <string>Количество вершин</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_8">
+   <widget class="QLabel" name="label_vertex_amount">
     <property name="geometry">
      <rect>
       <x>1130</x>
@@ -131,7 +131,7 @@
      <string>-</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_2">
+   <widget class="QLineEdit" name="lineEdit_yRot">
     <property name="geometry">
      <rect>
       <x>1200</x>
@@ -154,7 +154,7 @@
      <string>Y</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_3">
+   <widget class="QLineEdit" name="lineEdit_zRot">
     <property name="geometry">
      <rect>
       <x>1200</x>
@@ -177,11 +177,11 @@
      <string>Z</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_4">
+   <widget class="QLineEdit" name="lineEdit_y_move">
     <property name="geometry">
      <rect>
       <x>1200</x>
-      <y>235</y>
+      <y>255</y>
       <width>61</width>
       <height>21</height>
      </rect>
@@ -191,7 +191,7 @@
     <property name="geometry">
      <rect>
       <x>960</x>
-      <y>205</y>
+      <y>225</y>
       <width>16</width>
       <height>21</height>
      </rect>
@@ -204,7 +204,7 @@
     <property name="geometry">
      <rect>
       <x>960</x>
-      <y>235</y>
+      <y>255</y>
       <width>16</width>
       <height>21</height>
      </rect>
@@ -217,7 +217,7 @@
     <property name="geometry">
      <rect>
       <x>960</x>
-      <y>265</y>
+      <y>285</y>
       <width>16</width>
       <height>21</height>
      </rect>
@@ -226,21 +226,21 @@
      <string>Z</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_5">
+   <widget class="QLineEdit" name="lineEdit_z_move">
     <property name="geometry">
      <rect>
       <x>1200</x>
-      <y>265</y>
+      <y>285</y>
       <width>61</width>
       <height>21</height>
      </rect>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_6">
+   <widget class="QLineEdit" name="lineEdit_x_move">
     <property name="geometry">
      <rect>
       <x>1200</x>
-      <y>205</y>
+      <y>225</y>
       <width>61</width>
       <height>21</height>
      </rect>
@@ -250,7 +250,7 @@
     <property name="geometry">
      <rect>
       <x>970</x>
-      <y>180</y>
+      <y>196</y>
       <width>171</width>
       <height>16</height>
      </rect>
@@ -272,47 +272,11 @@
      <string>Кнопки для поворота</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_16">
-    <property name="geometry">
-     <rect>
-      <x>1030</x>
-      <y>330</y>
-      <width>61</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>+</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_17">
-    <property name="geometry">
-     <rect>
-      <x>960</x>
-      <y>330</y>
-      <width>61</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>-</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="lineEdit_9">
-    <property name="geometry">
-     <rect>
-      <x>1100</x>
-      <y>335</y>
-      <width>161</width>
-      <height>21</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_18">
+   <widget class="QLabel" name="label_scale_name">
     <property name="geometry">
      <rect>
       <x>970</x>
-      <y>310</y>
+      <y>327</y>
       <width>171</width>
       <height>16</height>
      </rect>
@@ -325,7 +289,7 @@
     <property name="geometry">
      <rect>
       <x>960</x>
-      <y>380</y>
+      <y>390</y>
       <width>301</width>
       <height>131</height>
      </rect>
@@ -362,9 +326,9 @@
     <widget class="QPushButton" name="pushButton_color_edge">
      <property name="geometry">
       <rect>
-       <x>140</x>
+       <x>130</x>
        <y>60</y>
-       <width>151</width>
+       <width>161</width>
        <height>32</height>
       </rect>
      </property>
@@ -398,39 +362,14 @@
       <string>Цвет</string>
      </property>
     </widget>
-    <widget class="QSlider" name="horizontalSlider_edge_size">
+    <widget class="QLineEdit" name="lineEdit_thickness_edge">
      <property name="geometry">
       <rect>
        <x>130</x>
-       <y>98</y>
-       <width>160</width>
-       <height>25</height>
-      </rect>
-     </property>
-     <property name="minimum">
-      <number>1</number>
-     </property>
-     <property name="maximum">
-      <number>40</number>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_edge_size">
-     <property name="geometry">
-      <rect>
-       <x>80</x>
        <y>100</y>
-       <width>41</width>
-       <height>16</height>
+       <width>161</width>
+       <height>21</height>
       </rect>
-     </property>
-     <property name="text">
-      <string>0.5</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
     </widget>
    </widget>
@@ -475,9 +414,9 @@
     <widget class="QPushButton" name="pushButton_color_vertex">
      <property name="geometry">
       <rect>
-       <x>140</x>
+       <x>130</x>
        <y>60</y>
-       <width>151</width>
+       <width>161</width>
        <height>32</height>
       </rect>
      </property>
@@ -524,63 +463,35 @@
       <string>Круг</string>
      </property>
     </widget>
-    <widget class="QSlider" name="horizontalSlider_vertex_size">
+    <widget class="QLineEdit" name="lineEdit_dot_size">
      <property name="geometry">
       <rect>
        <x>130</x>
-       <y>98</y>
-       <width>160</width>
-       <height>25</height>
-      </rect>
-     </property>
-     <property name="minimum">
-      <number>1</number>
-     </property>
-     <property name="maximum">
-      <number>40</number>
-     </property>
-     <property name="singleStep">
-      <number>1</number>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_vertex_size">
-     <property name="geometry">
-      <rect>
-       <x>80</x>
        <y>100</y>
-       <width>41</width>
-       <height>16</height>
+       <width>161</width>
+       <height>21</height>
       </rect>
-     </property>
-     <property name="text">
-      <string>0.5</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
     </widget>
    </widget>
-   <widget class="QPushButton" name="pushButton_13">
+   <widget class="QPushButton" name="pushButton_save_image_bmp">
     <property name="geometry">
      <rect>
       <x>970</x>
-      <y>770</y>
-      <width>281</width>
+      <y>790</y>
+      <width>141</width>
       <height>32</height>
      </rect>
     </property>
     <property name="text">
-     <string>Сохранить изображение</string>
+     <string>bmp</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_14">
+   <widget class="QPushButton" name="pushButton_film">
     <property name="geometry">
      <rect>
       <x>970</x>
-      <y>800</y>
+      <y>820</y>
       <width>281</width>
       <height>32</height>
      </rect>
@@ -605,9 +516,9 @@
    <widget class="QPushButton" name="pushButton_color_background">
     <property name="geometry">
      <rect>
-      <x>1100</x>
+      <x>1090</x>
       <y>670</y>
-      <width>151</width>
+      <width>161</width>
       <height>32</height>
      </rect>
     </property>
@@ -664,118 +575,280 @@
      </property>
     </widget>
    </widget>
-   <widget class="QSlider" name="horizontalSlider_edge_size_2">
+   <widget class="QPushButton" name="pushButton_xRot_right">
     <property name="geometry">
      <rect>
-      <x>980</x>
-      <y>260</y>
-      <width>201</width>
-      <height>25</height>
+      <x>1090</x>
+      <y>80</y>
+      <width>100</width>
+      <height>32</height>
      </rect>
     </property>
-    <property name="minimum">
-     <number>1</number>
-    </property>
-    <property name="maximum">
-     <number>40</number>
-    </property>
-    <property name="orientation">
-     <enum>Qt::Horizontal</enum>
+    <property name="text">
+     <string>&gt;</string>
     </property>
    </widget>
-   <widget class="QSlider" name="horizontalSlider_edge_size_3">
+   <widget class="QPushButton" name="pushButton_yRot_right">
     <property name="geometry">
      <rect>
-      <x>980</x>
-      <y>230</y>
-      <width>201</width>
-      <height>25</height>
-     </rect>
-    </property>
-    <property name="minimum">
-     <number>1</number>
-    </property>
-    <property name="maximum">
-     <number>40</number>
-    </property>
-    <property name="orientation">
-     <enum>Qt::Horizontal</enum>
-    </property>
-   </widget>
-   <widget class="QSlider" name="horizontalSlider_edge_size_4">
-    <property name="geometry">
-     <rect>
-      <x>980</x>
-      <y>200</y>
-      <width>201</width>
-      <height>25</height>
-     </rect>
-    </property>
-    <property name="minimum">
-     <number>1</number>
-    </property>
-    <property name="maximum">
-     <number>40</number>
-    </property>
-    <property name="orientation">
-     <enum>Qt::Horizontal</enum>
-    </property>
-   </widget>
-   <widget class="QSlider" name="horizontalSlider_edge_size_5">
-    <property name="geometry">
-     <rect>
-      <x>980</x>
-      <y>140</y>
-      <width>201</width>
-      <height>25</height>
-     </rect>
-    </property>
-    <property name="minimum">
-     <number>1</number>
-    </property>
-    <property name="maximum">
-     <number>40</number>
-    </property>
-    <property name="orientation">
-     <enum>Qt::Horizontal</enum>
-    </property>
-   </widget>
-   <widget class="QSlider" name="horizontalSlider_edge_size_6">
-    <property name="geometry">
-     <rect>
-      <x>980</x>
+      <x>1090</x>
       <y>110</y>
-      <width>201</width>
-      <height>25</height>
+      <width>100</width>
+      <height>32</height>
      </rect>
     </property>
-    <property name="minimum">
-     <number>1</number>
-    </property>
-    <property name="maximum">
-     <number>40</number>
-    </property>
-    <property name="orientation">
-     <enum>Qt::Horizontal</enum>
+    <property name="text">
+     <string>&gt;</string>
     </property>
    </widget>
-   <widget class="QSlider" name="horizontalSlider_edge_size_7">
+   <widget class="QPushButton" name="pushButton_zRot_right">
+    <property name="geometry">
+     <rect>
+      <x>1090</x>
+      <y>140</y>
+      <width>100</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&gt;</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_xRot_left">
     <property name="geometry">
      <rect>
       <x>980</x>
       <y>80</y>
-      <width>201</width>
-      <height>25</height>
+      <width>100</width>
+      <height>32</height>
      </rect>
     </property>
-    <property name="minimum">
-     <number>1</number>
+    <property name="text">
+     <string>&lt;</string>
     </property>
-    <property name="maximum">
-     <number>40</number>
+   </widget>
+   <widget class="QPushButton" name="pushButton_yRot_left">
+    <property name="geometry">
+     <rect>
+      <x>980</x>
+      <y>110</y>
+      <width>100</width>
+      <height>32</height>
+     </rect>
     </property>
-    <property name="orientation">
-     <enum>Qt::Horizontal</enum>
+    <property name="text">
+     <string>&lt;</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_zRot_left">
+    <property name="geometry">
+     <rect>
+      <x>980</x>
+      <y>140</y>
+      <width>100</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&lt;</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_x_move_left">
+    <property name="geometry">
+     <rect>
+      <x>980</x>
+      <y>220</y>
+      <width>100</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&lt;</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_x_move_right">
+    <property name="geometry">
+     <rect>
+      <x>1090</x>
+      <y>220</y>
+      <width>100</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&gt;</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_y_move_left">
+    <property name="geometry">
+     <rect>
+      <x>980</x>
+      <y>250</y>
+      <width>100</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&lt;</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_y_move_right">
+    <property name="geometry">
+     <rect>
+      <x>1090</x>
+      <y>250</y>
+      <width>100</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&gt;</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_minus">
+    <property name="geometry">
+     <rect>
+      <x>960</x>
+      <y>350</y>
+      <width>100</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Выпей меня</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_plus">
+    <property name="geometry">
+     <rect>
+      <x>1070</x>
+      <y>350</y>
+      <width>100</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Съешь меня</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_z_move_left">
+    <property name="geometry">
+     <rect>
+      <x>980</x>
+      <y>280</y>
+      <width>100</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&lt;</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_z_move_right">
+    <property name="geometry">
+     <rect>
+      <x>1090</x>
+      <y>280</y>
+      <width>100</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&gt;</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_apply_rotate">
+    <property name="geometry">
+     <rect>
+      <x>1140</x>
+      <y>54</y>
+      <width>121</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Крутим барабан</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_apply_move">
+    <property name="geometry">
+     <rect>
+      <x>1140</x>
+      <y>190</y>
+      <width>121</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Тудым сюдым</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_6">
+    <property name="geometry">
+     <rect>
+      <x>1240</x>
+      <y>358</y>
+      <width>21</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>%</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_scale">
+    <property name="geometry">
+     <rect>
+      <x>1176</x>
+      <y>355</y>
+      <width>61</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>100</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>1140</x>
+      <y>323</y>
+      <width>121</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Применить</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_8">
+    <property name="geometry">
+     <rect>
+      <x>980</x>
+      <y>770</y>
+      <width>251</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Сохранить изображение в формате:</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_save_image_jpeg">
+    <property name="geometry">
+     <rect>
+      <x>1120</x>
+      <y>790</y>
+      <width>131</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>jpeg</string>
     </property>
    </widget>
   </widget>

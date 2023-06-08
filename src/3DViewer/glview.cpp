@@ -1,166 +1,147 @@
 #include "glview.h"
+
 #include <unistd.h>
-glView::glView(QWidget *parent) :
-    QOpenGLWidget(parent)
-{
 
-
+glView::glView(QWidget *parent) : QOpenGLWidget(parent) {
+  all_surfaces = NULL;
+  all_points = NULL;
 }
-
-
-void glView:: initializeGL(){
-//    initializeOpenGLFunctions();
-    glEnable(GL_DEPTH_TEST);
-
-
-}
-void glView:: resizeGL(int w, int h){
-    glViewport(0, 0, w, h);
-
-}
-
-
 
 // вершинный буфер
 
-void glView:: paintGL(){
-    glClearColor(background_color.redF(), background_color.greenF(), background_color.blueF(), background_color.alphaF());
-    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+void glView::paintGL() {
+  glClearColor(background_color.redF(), background_color.greenF(), background_color.blueF(), background_color.alphaF());
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // проекция
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    projection();
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+  projection();
 
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
 
-
-    glRotatef(xRot,1,0,0);
-    glRotatef(yRot,0,1,0);
-
-    QByteArray ba = filename.toLocal8Bit();
-    char * file = ba.data();
+  glRotatef(xRot_m, 1, 0, 0);
+  glRotatef(yRot_m, 0, 1, 0);
 
 
-    if(p_type == SPHERE) glEnable(GL_POINT_SMOOTH);
-
-    if (p_type != NO) drawObj(file, true);
-
-    drawObj(file, false);
-
-    if(p_type == SPHERE)glDisable(GL_POINT_SMOOTH);
-
-//    update();
+  if (destroy) {
+     if(p_type != NO) drawPoints();
+    drawObj();
+  }
 }
 
-
-void glView::mousePressEvent(QMouseEvent* mo){
-    //запоминаем координату мышки
-    mPos = mo->pos();
-
-}
-void glView::mouseMoveEvent(QMouseEvent* mo){
-    xRot = 1/M_PI*(mo->pos().y() - mPos.y());
-    yRot = 1/M_PI*(mo->pos().x() - mPos.x());
-    update();
-}
-
-
-
-void glView::projection()
-{
-    if(ortho){
-        glOrtho(-1,1,-1,1, 1, 99999);
-        glTranslatef(0, 0, -4);
-    }else  {
-        glFrustum(-1,1,-1,1, 1, 99999);
-        glTranslatef(0, 0, -3);
+void glView::destroy_all() {
+  if (destroy) {
+    if (all_surfaces != NULL) {
+      for (int i = 0; i < count_surfaces; ++i) {
+        free(all_surfaces[i].one_point);
+      }
+      free(all_surfaces);
     }
+    if (all_points != NULL) {
+      free(all_points);
+    }
+    destroy = false;
+  }
 }
 
+void glView::paint_file_first() {
+  destroy_all();
+  all_surfaces = NULL;
+  all_points = NULL;
+  char file_str[1000] = {0};
+  top_pointers = 0;
+  edge = 0;
+  count_surfaces = 0;
+  scale = 1;
+  QByteArray temp = filename.toLocal8Bit();
+  strlcpy(file_str, temp.data(), filename.length() + 1);
 
-void glView::drawObj(char *file, bool points){
-    ExtremeValues extreme_values;
-    Point *all_points;
-    int top_pointers = 0;
-    int count_surfaces = 0;
-    all_points = point_reading(file, &top_pointers, &extreme_values);
-    figure_centering(top_pointers, &extreme_values, all_points);
+  all_points = return_points(&top_pointers, file_str);
+  all_surfaces = return_surfaces(&edge, &count_surfaces, file_str, all_points);
+  destroy = true;
+}
 
-    Surface *all_surfaces;
-    all_surfaces = (Surface *)malloc(SIZE * sizeof(Surface));
-    all_surfaces = surface_formation(file,&count_surfaces,
-                                     all_surfaces, all_points);
-
-    glPointSize(vertex_size);
+void glView::drawObj() {
     glLineWidth(edge_size);
+
     if(dotted_edge){
         glEnable(GL_LINE_STIPPLE);
         glLineStipple(1, 0x1010);
     }
-    for(int i = 0; i < count_surfaces; ++i){
-
-        for(int j = 0; j < all_surfaces[i].amount_of_points; ++j){
-            if(points){
-                glBegin(GL_POINTS);
-            }else {
-                glBegin(GL_LINE_LOOP);
-            }
-            if(!points)glColor3d(edge_color.redF(), edge_color.greenF(),edge_color.blueF());
-            if(points)glColor3d(vertex_color.redF(), vertex_color.greenF(),vertex_color.blueF());
-            glVertex3d(all_surfaces[i].one_point[j]->x,all_surfaces[i].one_point[j]->y,all_surfaces[i].one_point[j]->z);
-        }
-        glEnd();
-
+  for (int i = 0; i < count_surfaces; ++i) {
+    for (int j = 0; j < all_surfaces[i].amount_of_points; ++j) {
+      glBegin(GL_LINE_LOOP);
+      glColor3d(edge_color.redF(), edge_color.greenF(),edge_color.blueF());
+      glVertex3d(all_surfaces[i].one_point[j]->x,
+                 all_surfaces[i].one_point[j]->y,
+                 all_surfaces[i].one_point[j]->z);
     }
+    glEnd();
+  }
+  if(dotted_edge)glDisable(GL_LINE_STIPPLE);
+}
 
-    if(dotted_edge)glDisable(GL_LINE_STIPPLE);
+void glView::drawPoints()
+{
+    if(p_type == SPHERE) glEnable(GL_POINT_SMOOTH);
+    glPointSize(vertex_size);
 
-         for (int i = 0; i < count_surfaces; ++i) {
-             free(all_surfaces[i].one_point);
-         }
-         free(all_surfaces);
-    free(all_points);
 
+    for (int i = 0; i < count_surfaces; ++i) {
+      for (int j = 0; j < all_surfaces[i].amount_of_points; ++j) {
+        glBegin(GL_POINTS);
+        glColor3d(vertex_color.redF(), vertex_color.greenF(),vertex_color.blueF());
+        glVertex3d(all_surfaces[i].one_point[j]->x,
+                   all_surfaces[i].one_point[j]->y,
+                   all_surfaces[i].one_point[j]->z);
+      }
+      glEnd();
+    }
+    if(p_type == SPHERE) glDisable(GL_POINT_SMOOTH);
 }
 
 
 
+void glView::mousePressEvent(QMouseEvent *mo) {
+  // запоминаем координату мышки
+  mPos = mo->pos();
+}
+void glView::mouseMoveEvent(QMouseEvent *mo) {
+  xRot_m = 1 / M_PI * (mo->pos().y() - mPos.y());
+  yRot_m = 1 / M_PI * (mo->pos().x() - mPos.x());
+  update();
+}
 
-//void glView::drawObj(char * s){
-//    float a = 0.5;
-//    float ver[] = {
-//        -a, -a, a,  a,-a, a,  a, a, a,  -a, a, a,
-//        a, -a, -a,  -a,-a, -a,  -a, a, -a,  a, a, -a,
+void glView::projection() {
+  if (ortho) {
+    glOrtho(-1.5, 1.5, -1.5, 1.5, -2, 1000);
+  } else if (frustum) {
+    glFrustum(-1, 1, -1, 1, 1, 99999);
+    glTranslatef(0, 0, -2.8);
+  }
+}
 
-//        -a, -a, -a,  -a,-a, a,  -a, a, a, -a, a, -a,
+bool glView::fileExists(QString path) {
+  QFileInfo check_file(path);
+  // check if file exists and if yes: Is it really a file and no directory?
+  return check_file.exists() && check_file.isFile();
+}
 
+Point *glView::get_all_points() { return all_points; }
 
-//        a, -a, a,  a,-a, -a,  a, a, -a, a, a, a,
+Surface *glView::get_all_surfaces() { return all_surfaces; }
 
-//        -a, -a, a,  a,-a, a,  a, -a, -a, -a, -a, -a,
-//        -a, a, a,  a,a, a,  a, a, -a, -a, a, -a,
+int glView::get_top_pointers() { return top_pointers; }
 
+int glView::get_count_surfaces() { return count_surfaces; }
 
-//    };
+int glView::get_edge() { return edge; }
 
-//    float col[] = {
-//          1, 0, 0,  1, 0, 0 ,  1, 0, 0,  1, 0, 0,
-//          0, 0, 1,  0, 0, 1,  0, 0, 1,  0, 0, 1,
-//          1, 1, 0,  1, 1, 0,  1, 1, 0,  1, 1, 0,
-//          0, 1, 1,  0, 1, 1,  0, 1, 1,  0, 1, 1,
-//          1, 0, 1,  1, 0, 1,  1, 0, 1,  1, 0, 1,
-//          1, 0.5, 0.5,  1, 0.5, 0.5,  1, 0.5, 0.5,  1, 0.5, 0.5
-//    };
-//    glVertexPointer(3, GL_FLOAT, 0, ver);
-//    glEnableClientState(GL_VERTEX_ARRAY);
-
-//    glColorPointer(3, GL_FLOAT, 0, col);
-//    glEnableClientState(GL_COLOR_ARRAY);
-
-//    glDrawArrays(GL_QUADS, 0, 24);
-
-//    glDisableClientState(GL_COLOR_ARRAY);
-//    glDisableClientState(GL_VERTEX_ARRAY);
-//}
+void glView::set_scale()
+{
+   if(destroy){
+       figure_scaling(top_pointers, scale, all_points);
+       update();
+   }
+}
