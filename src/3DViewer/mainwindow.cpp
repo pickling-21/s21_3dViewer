@@ -162,15 +162,20 @@ void MainWindow::on_button_filename_clicked() {
 
   if (!str.isEmpty()) {
     ui->widget->paint_file_first();
+    if(ui->widget->destroy){
 
-    ui->label_edge_amount->setText(QString::number(ui->widget->get_edge()));
-    ui->label_vertex_amount->setText(
-        QString::number(ui->widget->get_top_pointers() - 1));
-    QStringList parts = str.split("/");
-    QString lastBit = parts.at(parts.size() - 1);
-    ui->label_filename->setText(lastBit);
+        ui->label_edge_amount->setText(QString::number(ui->widget->get_edge()));
+        ui->label_vertex_amount->setText(
+            QString::number(ui->widget->get_top_pointers() - 1));
+        QStringList parts = str.split("/");
+        QString lastBit = parts.at(parts.size() - 1);
+        ui->label_filename->setText(lastBit);
 
-    ui->widget->update();
+        ui->widget->update();
+    }else{
+        QMessageBox::warning(this, tr("Save Error"),
+                             tr("Некорректный файл"));
+    }
   }
 }
 
@@ -518,7 +523,7 @@ void MainWindow::on_pushButton_film_clicked() {
   if (ui->widget->destroy) {
     Dialog window(this);
     save_as("gif", FileName_gif);
-    if (FileName_gif != "") {
+    if (!FileName_gif.isEmpty()) {
       ui->label_film_process->show();
       ui->label_film_process_5->show();
       connect(&window, SIGNAL(apply(double, double, double)),
