@@ -10,7 +10,8 @@ glView::glView(QWidget *parent) : QOpenGLWidget(parent) {
 // вершинный буфер
 
 void glView::paintGL() {
-  glClearColor(background_color.redF(), background_color.greenF(), background_color.blueF(), background_color.alphaF());
+  glClearColor(background_color.redF(), background_color.greenF(),
+               background_color.blueF(), background_color.alphaF());
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   glMatrixMode(GL_PROJECTION);
@@ -23,9 +24,8 @@ void glView::paintGL() {
   glRotatef(xRot_m, 1, 0, 0);
   glRotatef(yRot_m, 0, 1, 0);
 
-
   if (destroy) {
-     if(p_type != NO) drawPoints();
+    if (p_type != NO) drawPoints();
     drawObj();
   }
 }
@@ -63,45 +63,42 @@ void glView::paint_file_first() {
 }
 
 void glView::drawObj() {
-    glLineWidth(edge_size);
+  glLineWidth(edge_size);
 
-    if(dotted_edge){
-        glEnable(GL_LINE_STIPPLE);
-        glLineStipple(1, 0x1010);
-    }
+  if (dotted_edge) {
+    glEnable(GL_LINE_STIPPLE);
+    glLineStipple(1, 0x1010);
+  }
   for (int i = 0; i < count_surfaces; ++i) {
     for (int j = 0; j < all_surfaces[i].amount_of_points; ++j) {
       glBegin(GL_LINE_LOOP);
-      glColor3d(edge_color.redF(), edge_color.greenF(),edge_color.blueF());
+      glColor3d(edge_color.redF(), edge_color.greenF(), edge_color.blueF());
       glVertex3d(all_surfaces[i].one_point[j]->x,
                  all_surfaces[i].one_point[j]->y,
                  all_surfaces[i].one_point[j]->z);
     }
     glEnd();
   }
-  if(dotted_edge)glDisable(GL_LINE_STIPPLE);
+  if (dotted_edge) glDisable(GL_LINE_STIPPLE);
 }
 
-void glView::drawPoints()
-{
-    if(p_type == SPHERE) glEnable(GL_POINT_SMOOTH);
-    glPointSize(vertex_size);
+void glView::drawPoints() {
+  if (p_type == SPHERE) glEnable(GL_POINT_SMOOTH);
+  glPointSize(vertex_size);
 
-
-    for (int i = 0; i < count_surfaces; ++i) {
-      for (int j = 0; j < all_surfaces[i].amount_of_points; ++j) {
-        glBegin(GL_POINTS);
-        glColor3d(vertex_color.redF(), vertex_color.greenF(),vertex_color.blueF());
-        glVertex3d(all_surfaces[i].one_point[j]->x,
-                   all_surfaces[i].one_point[j]->y,
-                   all_surfaces[i].one_point[j]->z);
-      }
-      glEnd();
+  for (int i = 0; i < count_surfaces; ++i) {
+    for (int j = 0; j < all_surfaces[i].amount_of_points; ++j) {
+      glBegin(GL_POINTS);
+      glColor3d(vertex_color.redF(), vertex_color.greenF(),
+                vertex_color.blueF());
+      glVertex3d(all_surfaces[i].one_point[j]->x,
+                 all_surfaces[i].one_point[j]->y,
+                 all_surfaces[i].one_point[j]->z);
     }
-    if(p_type == SPHERE) glDisable(GL_POINT_SMOOTH);
+    glEnd();
+  }
+  if (p_type == SPHERE) glDisable(GL_POINT_SMOOTH);
 }
-
-
 
 void glView::mousePressEvent(QMouseEvent *mo) {
   // запоминаем координату мышки
@@ -116,7 +113,7 @@ void glView::mouseMoveEvent(QMouseEvent *mo) {
 void glView::projection() {
   if (ortho) {
     glOrtho(-1.5, 1.5, -1.5, 1.5, -2, 1000);
-  } else if (frustum) {
+  } else {
     glFrustum(-1, 1, -1, 1, 1, 99999);
     glTranslatef(0, 0, -2.8);
   }
@@ -138,10 +135,9 @@ int glView::get_count_surfaces() { return count_surfaces; }
 
 int glView::get_edge() { return edge; }
 
-void glView::set_scale()
-{
-   if(destroy){
-       figure_scaling(top_pointers, scale, all_points);
-       update();
-   }
+void glView::set_scale() {
+  if (destroy) {
+    figure_scaling(top_pointers, scale, all_points);
+    update();
+  }
 }

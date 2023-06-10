@@ -1,6 +1,8 @@
 QT       += core gui
 QT += openglwidgets
 
+include(./QtGifImage/src/gifimage/qtgifimage.pri)
+
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -10,17 +12,20 @@ CONFIG += c++17
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 SOURCES += \
+    dialog.cpp \
     main.cpp \
     glview.cpp \
-    ../parser.c \
+    ../c_part/parser.c \
     mainwindow.cpp
 
 HEADERS += \
-    ../parser.h \
+    ../c_part/parser.h \
+    dialog.h \
     glview.h\
     mainwindow.h
 
 FORMS += \
+    dialog.ui \
     mainwindow.ui
 
 # Default rules for deployment.

@@ -5,10 +5,12 @@
 #include <QFileInfo>
 #include <QMouseEvent>
 #include <QOpenGLWidget>
+#include <QTimer>
 #include <QWidget>
 
+#include "qgifimage.h"
 extern "C" {
-#include "../parser.h"
+#include "../c_part/parser.h"
 }
 
 namespace Ui {
@@ -23,7 +25,6 @@ class glView : public QOpenGLWidget {
   Q_OBJECT
 
  public:
-
   glView(QWidget *parent = nullptr);
   QString filename;
   // файл
@@ -34,7 +35,7 @@ class glView : public QOpenGLWidget {
   bool destroy = false;
   // нужно ли очищать память
 
-  bool ortho, frustum;
+  bool ortho;
   // проекции
 
   double scale;
@@ -45,13 +46,11 @@ class glView : public QOpenGLWidget {
   float vertex_size, edge_size;
   // цвет и размер вершин и линий
 
-
   enum points_type p_type;
-  //тип точек(куб, сфера или их нет)
+  // тип точек(куб, сфера или их нет)
 
   bool dotted_edge;
   // пунктирная ли линия
-
 
   Point *get_all_points();
   Surface *get_all_surfaces();
@@ -80,7 +79,7 @@ class glView : public QOpenGLWidget {
   // парсер
 
   void projection();
-  //проекции
+  // проекции
   void drawObj();
   void drawPoints();
 
