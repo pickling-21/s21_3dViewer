@@ -84,7 +84,7 @@ clean:
 push: 
 	git add .
 	git commit -m'$m'
-	git push origin develop
+	git push 
 
         # eval "$(/opt/goinfre/pickling/homebrew/bin/brew shellenv)"
         # chmod -R go-w "$(brew --prefix)/share/zsh"
