@@ -22,7 +22,7 @@ typedef struct {
   double y_max, y_min;
   double z_max, z_min;
 } ExtremeValues;
-// int main88();/
+
 Point *point_reading(char *file, int *top_pointers,
                      ExtremeValues *extreme_values);
 void coordinate_recording_counter(int *count_coord, int top_pointers,
@@ -58,5 +58,11 @@ int character_check_for_surfaces(char c);
 Point *return_points(int *top_pointers, char *file);
 Surface *return_surfaces(int *edge, int *count_surfaces, char *file,
                          Point *all_points);
+void figure_rotation(int top_pointers, Point *all_points, double degree_x,
+                     double degree_y, double degree_z);
+void figure_move_x(int top_pointers, int shift, Point *all_points);
+void figure_move_y(int top_pointers, int shift, Point *all_points);
+void figure_move_z(int top_pointers, int shift, Point *all_points);
+void figure_scaling(int top_pointers, double coefficient, Point *all_points);
 
 #endif  // PARSER_H

@@ -1,38 +1,4 @@
 #include "parser.h"
-// int main() { main88(); }
-
-int main88() {
-  //  //    char file[50] = {"RailwayTrack.obj"};
-  //  //    char file[50] = {"cube.obj"};
-  //  //    char file[50] = {"Shrek.obj"};
-  //  //    char file[50] = {"ring.obj"};
-  //  char file[50] = {"skull.obj"};
-  //  //    char file[50] = {"hui.obj"};
-
-  //  Point *all_points = NULL;
-  //  int top_pointers = 0;
-  //  int count_surfaces = 0;
-  //  Surface *all_surfaces;
-  //  int edge = 0;
-
-  //  all_points = return_points(&top_pointers, file);
-
-  //  if (all_points != NULL) {
-  //    all_surfaces = return_surfaces(&edge, &count_surfaces, file,
-  //    all_points);
-  //  }
-
-  //  if (all_surfaces != NULL) {
-  //    for (int i = 0; i < count_surfaces; ++i) {
-  //      free(all_surfaces[i].one_point);
-  //    }
-  //    free(all_surfaces);
-  //  }
-  //  if (all_points != NULL) {
-  //    free(all_points);
-  //  }
-  return 0;
-}
 
 Surface *return_surfaces(int *edge, int *count_surfaces, char *file,
                          Point *all_points) {
@@ -54,55 +20,6 @@ Point *return_points(int *top_pointers, char *file) {
   if (all_points != NULL)
     figure_centering(*top_pointers, &extreme_values, all_points);
   return all_points;
-}
-
-void figure_rotation(int top_pointers, Point *all_points, double degree_x,
-                     double degree_y, double degree_z) {
-  double sin_x = sin(degree_x * M_PI / 180);
-  double cos_x = cos(degree_x * M_PI / 180);
-  double sin_y = sin(degree_y * M_PI / 180);
-  double cos_y = cos(degree_y * M_PI / 180);
-  double sin_z = sin(degree_z * M_PI / 180);
-  double cos_z = cos(degree_z * M_PI / 180);
-  for (int i = 0; i <= top_pointers; ++i) {
-    double x = all_points[i].x;
-    double y = all_points[i].y;
-    double z = all_points[i].z;
-    double temp_x, temp_y, temp_z;
-    temp_y = cos_x * y - sin_x * z;
-    temp_z = sin_x * y + cos_x * z;
-    temp_x = cos_y * x + sin_y * temp_z;
-    temp_z = -sin_y * x + cos_y * temp_z;
-    all_points[i].x = cos_z * temp_x - sin_z * temp_y;
-    all_points[i].y = sin_z * temp_x + cos_z * temp_y;
-    all_points[i].z = temp_z;
-  }
-}
-
-void figure_scaling(int top_pointers, double coefficient, Point *all_points) {
-  for (int i = 0; i <= top_pointers; ++i) {
-    all_points[i].x *= coefficient;
-    all_points[i].y *= coefficient;
-    all_points[i].z *= coefficient;
-  }
-}
-
-void figure_move_x(int top_pointers, int shift, Point *all_points) {
-  for (int i = 0; i <= top_pointers; ++i) {
-    all_points[i].x += shift;
-  }
-}
-
-void figure_move_y(int top_pointers, int shift, Point *all_points) {
-  for (int i = 0; i <= top_pointers; ++i) {
-    all_points[i].y += shift;
-  }
-}
-
-void figure_move_z(int top_pointers, int shift, Point *all_points) {
-  for (int i = 0; i <= top_pointers; ++i) {
-    all_points[i].z += shift;
-  }
 }
 
 void figure_centering(int top_pointers, ExtremeValues *extreme_values,
@@ -166,6 +83,11 @@ Point *point_processing(FILE *f, int *top_pointers, int *size_all_points,
       fgets(buffer_str, 99, f);
       all_points = point_search_cycle(top_pointers, buffer_str, extreme_values,
                                       all_points);
+    } else if (((c == ' ') && (past_char == 'f')) ||
+               ((c == ' ') && (past_char == 't')) ||
+               ((c == ' ') && (past_char == 'n'))) {
+      char buffer_str[1000];
+      fgets(buffer_str, 999, f);
     }
     past_char = c;
   }
@@ -320,7 +242,6 @@ Surface *surface_formation(int *edge, char *file, int *count_surfaces,
   if ((f = fopen(file, "r")) != NULL) {
     char c;
     char past_char = 0;
-    char buffer_str[1000];
     int top_pointers_now = 0;
     while ((c = fgetc(f)) != EOF) {
       if ((c == ' ') && (past_char == 'v')) {
@@ -332,11 +253,17 @@ Surface *surface_formation(int *edge, char *file, int *count_surfaces,
           all_surfaces = (Surface *)realloc(
               all_surfaces, size_all_surfaces * sizeof(Surface));
         }
+        char buffer_str[1000];
         fgets(buffer_str, 999, f);
         all_surfaces =
             points_in_space(edge, buffer_str, (*count_surfaces),
                             top_pointers_now - 1, all_surfaces, all_points);
         (*count_surfaces)++;
+      } else if (((c == ' ') && (past_char == 'v')) ||
+                 ((c == ' ') && (past_char == 't')) ||
+                 ((c == ' ') && (past_char == 'n'))) {
+        char buffer_str[1000];
+        fgets(buffer_str, 999, f);
       }
       past_char = c;
     }
@@ -419,5 +346,54 @@ void point_address_calculation(char chr, int *res, int *flag_mines) {
 
   } else {
     (*flag_mines) = 1;
+  }
+}
+
+void figure_rotation(int top_pointers, Point *all_points, double degree_x,
+                     double degree_y, double degree_z) {
+  double sin_x = sin(degree_x * M_PI / 180);
+  double cos_x = cos(degree_x * M_PI / 180);
+  double sin_y = sin(degree_y * M_PI / 180);
+  double cos_y = cos(degree_y * M_PI / 180);
+  double sin_z = sin(degree_z * M_PI / 180);
+  double cos_z = cos(degree_z * M_PI / 180);
+  for (int i = 0; i <= top_pointers; ++i) {
+    double x = all_points[i].x;
+    double y = all_points[i].y;
+    double z = all_points[i].z;
+    double temp_x, temp_y, temp_z;
+    temp_y = cos_x * y - sin_x * z;
+    temp_z = sin_x * y + cos_x * z;
+    temp_x = cos_y * x + sin_y * temp_z;
+    temp_z = -sin_y * x + cos_y * temp_z;
+    all_points[i].x = cos_z * temp_x - sin_z * temp_y;
+    all_points[i].y = sin_z * temp_x + cos_z * temp_y;
+    all_points[i].z = temp_z;
+  }
+}
+
+void figure_scaling(int top_pointers, double coefficient, Point *all_points) {
+  for (int i = 0; i <= top_pointers; ++i) {
+    all_points[i].x *= coefficient;
+    all_points[i].y *= coefficient;
+    all_points[i].z *= coefficient;
+  }
+}
+
+void figure_move_x(int top_pointers, int shift, Point *all_points) {
+  for (int i = 0; i <= top_pointers; ++i) {
+    all_points[i].x += shift;
+  }
+}
+
+void figure_move_y(int top_pointers, int shift, Point *all_points) {
+  for (int i = 0; i <= top_pointers; ++i) {
+    all_points[i].y += shift;
+  }
+}
+
+void figure_move_z(int top_pointers, int shift, Point *all_points) {
+  for (int i = 0; i <= top_pointers; ++i) {
+    all_points[i].z += shift;
   }
 }

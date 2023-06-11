@@ -1,41 +1,37 @@
-#include "qgifimage.h"
 #include <QPainter>
 #include <QtTest>
 
-class QGifimageTest : public QObject
-{
-    Q_OBJECT
+#include "qgifimage.h"
 
-public:
-    QGifimageTest();
+class QGifimageTest : public QObject {
+  Q_OBJECT
 
-private Q_SLOTS:
-    void testGifFileLoad();
+ public:
+  QGifimageTest();
 
-private:
-    QImage rgbImage;
-    QImage indexed8Image;
-    QGifImage gifImage;
+ private Q_SLOTS:
+  void testGifFileLoad();
+
+ private:
+  QImage rgbImage;
+  QImage indexed8Image;
+  QGifImage gifImage;
 };
 
-QGifimageTest::QGifimageTest()
-{
-    QImage image(100, 100, QImage::Format_RGB32);
-    image.fill(QColor(Qt::red));
-    QPainter p(&image);
-    p.setPen(Qt::blue);
-    p.drawRect(20, 20, 60, 60);
+QGifimageTest::QGifimageTest() {
+  QImage image(100, 100, QImage::Format_RGB32);
+  image.fill(QColor(Qt::red));
+  QPainter p(&image);
+  p.setPen(Qt::blue);
+  p.drawRect(20, 20, 60, 60);
 
-    rgbImage = image;
-    indexed8Image = image.convertToFormat(QImage::Format_Indexed8);
+  rgbImage = image;
+  indexed8Image = image.convertToFormat(QImage::Format_Indexed8);
 
-    gifImage.load(SRCDIR"test.gif");
+  gifImage.load(SRCDIR "test.gif");
 }
 
-void QGifimageTest::testGifFileLoad()
-{
-    QVERIFY2(true, "Failure");
-}
+void QGifimageTest::testGifFileLoad() { QVERIFY2(true, "Failure"); }
 
 QTEST_MAIN(QGifimageTest)
 

@@ -59,8 +59,10 @@ void glView::paint_file_first() {
 
   all_points = return_points(&top_pointers, file_str);
   all_surfaces = return_surfaces(&edge, &count_surfaces, file_str, all_points);
-  if(all_points == NULL || all_surfaces == NULL) destroy = false;
-  else destroy = true;
+  if (all_points == NULL || all_surfaces == NULL)
+    destroy = false;
+  else
+    destroy = true;
 }
 
 void glView::drawObj() {

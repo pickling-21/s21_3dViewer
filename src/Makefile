@@ -7,8 +7,14 @@ CFLAGS=-std=c11 -Wall -Werror -Wextra
 GCOV=--coverage
 SRC_DIRS ?=./c_part
 
+SCR_ALL ?= ./
+
 SRCS := $(shell find $(SRC_DIRS) -name '*.c' )
 SRCSH := $(shell find $(SRC_DIRS) -name '*.h' )
+
+ALL_SRCS := $(shell find $(SCR_ALL) -name '*.cpp' )
+ALL_SRCSH := $(shell find $(SCR_ALL) -name '*.h' )
+
 
 OBJS := $(addsuffix .o,$(basename $(SRCS)))
 
@@ -78,21 +84,21 @@ clean:
 push: 
 	git add .
 	git commit -m'$m'
-	git push 
+	git push origin develop
 
-        # eval "$(/opt/goinfre/username/homebrew/bin/brew shellenv)"
+        # eval "$(/opt/goinfre/pickling/homebrew/bin/brew shellenv)"
         # chmod -R go-w "$(brew --prefix)/share/zsh"
 
 style: 
 	cp ../materials/linters/.clang-format .clang-format 
-	clang-format -n $(SRCS)
-	clang-format -n $(SRCSH)
+	clang-format -n $(ALL_SRCS)
+	clang-format -n $(ALL_SRCSH)
 	rm -rf .clang-format
 
 style_done: 
 	cp ../materials/linters/.clang-format .clang-format 
-	clang-format -i $(SRCS)
-	clang-format -i $(SRCSH)
+	clang-format -i $(ALL_SRCS)
+	clang-format -i $(ALL_SRCSH)
 	rm -rf .clang-format
 
 

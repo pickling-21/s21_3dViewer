@@ -99,12 +99,11 @@ void MainWindow::load_settings() {
 
   ui->widget->background_color = settings->value("back_color").toString();
 
-
   ui->widget->ortho = settings->value("ortho").toBool();
-  if (ui->widget->ortho){
-     ui->radioButton_ortho->setChecked(true);
-  }else{
-      ui->radioButton_central->setChecked(true);
+  if (ui->widget->ortho) {
+    ui->radioButton_ortho->setChecked(true);
+  } else {
+    ui->radioButton_central->setChecked(true);
   }
   settings->endGroup();
 
@@ -162,19 +161,17 @@ void MainWindow::on_button_filename_clicked() {
 
   if (!str.isEmpty()) {
     ui->widget->paint_file_first();
-    if(ui->widget->destroy){
+    if (ui->widget->destroy) {
+      ui->label_edge_amount->setText(QString::number(ui->widget->get_edge()));
+      ui->label_vertex_amount->setText(
+          QString::number(ui->widget->get_top_pointers() - 1));
+      QStringList parts = str.split("/");
+      QString lastBit = parts.at(parts.size() - 1);
+      ui->label_filename->setText(lastBit);
 
-        ui->label_edge_amount->setText(QString::number(ui->widget->get_edge()));
-        ui->label_vertex_amount->setText(
-            QString::number(ui->widget->get_top_pointers() - 1));
-        QStringList parts = str.split("/");
-        QString lastBit = parts.at(parts.size() - 1);
-        ui->label_filename->setText(lastBit);
-
-        ui->widget->update();
-    }else{
-        QMessageBox::warning(this, tr("Save Error"),
-                             tr("Некорректный файл"));
+      ui->widget->update();
+    } else {
+      QMessageBox::warning(this, tr("Save Error"), tr("Некорректный файл"));
     }
   }
 }
